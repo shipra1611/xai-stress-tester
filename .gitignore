@@ -1,0 +1,6 @@
+echo "venv/
+data/images/
+outputs/
+*.tar.gz
+*.npy
+__pycache__/" > .gitignore
