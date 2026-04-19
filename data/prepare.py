@@ -1,22 +1,21 @@
-# data/prepare.py
 import os, pandas as pd
 
 def build_csv(split="test"):
     base = f"data/chest_xray/{split}"
     rows = []
     for label_name, label_val in [("NORMAL", 0), ("PNEUMONIA", 1)]:
-        folder = os.path.join(base, label_name)
+        folder = f"{base}/{label_name}"          # forward slash hardcoded
         for fname in os.listdir(folder):
-            if fname.endswith(".jpeg") or fname.endswith(".jpg"):
+            if fname.lower().endswith((".jpeg", ".jpg", ".png")):
                 rows.append({
-                    "filepath": os.path.join(folder, fname),
+                    "filepath": f"{folder}/{fname}",   # forward slash
                     "label": label_val,
                     "label_name": label_name
                 })
     df = pd.DataFrame(rows)
     df.to_csv(f"data/{split}_labels.csv", index=False)
-    print(f"{split}: {len(df)} images")
-    print(df["label_name"].value_counts())
+    print(f"Saved {len(df)} rows")
+    print(df["filepath"].iloc[0])
     return df
 
 build_csv("test")
